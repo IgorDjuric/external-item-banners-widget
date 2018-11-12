@@ -96,9 +96,13 @@ function gf_external_item_banners_widget_options_page()
                 $categoryUrl = $_POST['categoryUrl'];
                 $itemUrl = $_POST['itemUrl'];
 
+                $product_id = wc_get_product_id_by_sku( $itemId );
+                $imageSrc = get_the_post_thumbnail_url($product_id, 'thumbnail');
+                var_dump($imageSrc);
+
                 if (isset($_POST['articleCreate'])){
-                    $sql_insert = "INSERT INTO wp_nss_external_banners_widget (itemId, title, description, salePrice, regularPrice, categoryUrl, itemUrl)
-                        VALUES ({$itemId}, '{$title}', '{$description}', {$salePrice}, {$regularPrice}, '{$categoryUrl}', '{$itemUrl}')";
+                    $sql_insert = "INSERT INTO wp_nss_external_banners_widget (itemId, title, description, salePrice, regularPrice, categoryUrl, itemUrl, imageSrc)
+                        VALUES ({$itemId}, '{$title}', '{$description}', {$salePrice}, {$regularPrice}, '{$categoryUrl}', '{$itemUrl}', '{$imageSrc}')";
                     $insert = $wpdb->query($sql_insert);
                     echo '<div class="notice notice-success is-dismissible"><p>Article created!</p></div>';
                 }
@@ -129,10 +133,11 @@ function gf_external_item_banners_widget_options_page()
         <?php
         $get_items_sql = "SELECT * FROM `wp_nss_external_banners_widget`";
         $items_result = $wpdb->get_results($get_items_sql);
-
+        
         ?>
         <h3>Product list</h3>
-        <table class="widefat" cellspacing="0">
+        <table class="widefat externalItemBannersWidget-table" cellspacing="1">
+            <th>Image</th>
             <th>Item ID</th>
             <th>Title</th>
             <th>Description</th>
@@ -143,6 +148,7 @@ function gf_external_item_banners_widget_options_page()
 
             <?php foreach ($items_result as $item): ?>
                 <tr>
+                    <td><img src="<?=$item->imageSrc?>"></td>
                     <td><?= $item->itemId ?></td>
                     <td><?= $item->title ?></td>
                     <td><?= $item->description ?></td>
