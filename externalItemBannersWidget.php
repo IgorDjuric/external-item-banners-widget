@@ -98,7 +98,6 @@ function gf_external_item_banners_widget_options_page()
 
                 $product_id = wc_get_product_id_by_sku( $itemId );
                 $imageSrc = get_the_post_thumbnail_url($product_id, 'thumbnail');
-                var_dump($imageSrc);
 
                 if (isset($_POST['articleCreate'])){
                     $sql_insert = "INSERT INTO wp_nss_external_banners_widget (itemId, title, description, salePrice, regularPrice, categoryUrl, itemUrl, imageSrc)
